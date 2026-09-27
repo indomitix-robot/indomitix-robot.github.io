@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDOMITIX // Extreme-Environment Industrial Humanoids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050507;
+            --panel-bg: #0b0c10;
+            --border-color: #1f2833;
+            --accent-orange: #ff5500;
+            --accent-cyan: #00ffff;
+            --text-main: #c5c6c7;
+            --text-bright: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Scanline Overlay for Sci-Fi CRT feel */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 7, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--text-bright);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--accent-orange);
+        }
+
+        .status-badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 255, 255, 0.05);
+            letter-spacing: 1px;
+        }
+
+        .hero {
+            padding: 6rem 5% 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 3.5rem;
+            color: var(--text-bright);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5% 6rem 5%;
+        }
+
+        .section-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--text-bright);
+            border-left: 4px solid var(--accent-orange);
+            padding-left: 1rem;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+        }
+
+        .card {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 20px rgba(255, 85, 0, 0.15);
+        }
+
+        .card-img-wrap {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-wrap img {
+            transform: scale(1.03);
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .spec-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--text-bright);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 5%;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: #666;
+            background: var(--panel-bg);
+        }
+
+        footer a {
+            color: var(--accent-orange);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Indomi<span>tix</span></div>
+        <div class="status-badge">SYS_STATUS: DORMANT</div>
+    </header>
+
+    <section class="hero">
+        <h1>Robots for Extreme Enviromments</h1>
+        <p>Deploying heavy industrial humanoids engineered to survive extreme thermal, high-voltage, subsea, and radiation hazards where human intervention is impossible.</p>
+    </section>
+
+    <div class="container">
+        <div class="section-title">Deployment Variants // Operational Matrix</div>
+        
+        <div class="grid">
+            <!-- Variant 1 -->
+            <div class="card">
+                <div class="card-img-wrap">
+                    <img src="variant-emi.jpg" alt="EMI HV Variant">
+                </div>
+                <div class="card-content">
+                    <span class="spec-tag">Spec 01 // High-Voltage Grid</span>
+                    <h3>EMI / HV Heavy Variant</h3>
+                    <p>Equipped with braided shielding and ceramic insulation cowlings to form faraday cages. Designed to maintain high-torque manipulation inside on high-voltage grid infrastructure under severe electromagnetic interference.</p>
+                </div>
+            </div>
+
+            <!-- Variant 2 -->
+            <div class="card">
+                <div class="card-img-wrap">
+                    <img src="variant-space.jpg" alt="Space Variant">
+                </div>
+                <div class="card-content">
+                    <span class="spec-tag">Spec 02 // Orbital & Deep Space</span>
+                    <h3>Orbital Asset Variant</h3>
+                    <p>Wrapped in multi-layer insulation (MLI) panels and anti-radiation thermal coatings. Features integrated magnetic anchor boots and umbilical lock ports for structural maintenance on deep-space platforms.</p>
+                </div>
+            </div>
+
+            <!-- Variant 3 -->
+            <div class="card">
+                <div class="card-img-wrap">
+                    <img src="variant-subsea.jpg" alt="Underwater Variant">
+                </div>
+                <div class="card-content">
+                    <span class="spec-tag">Spec 03 // Abyssal Subsea</span>
+                    <h3>Subsea Deep-Pressure Variant</h3>
+                    <p>Forged from durable alloy casings with anti-corrosion marine coatings. Built with external pressure compensation modules to manipulate heavy-duty subsea valves and wellheads in pitch-black oceanic depths.</p>
+                </div>
+            </div>
+
+            <!-- Variant 4 -->
+            <div class="card">
+                <div class="card-img-wrap">
+                    <img src="variant-volcano.jpg" alt="Volcano Proximity Variant">
+                </div>
+                <div class="card-content">
+                    <span class="spec-tag">Spec 04 // Extreme Thermal Environments</span>
+                    <h3>Desert and hot environment Variant</h3>
+                    <p>Encased in multi-layered silver ceramic heat shielding and silica-aerogel seals. Engineered to withstand intense radiative heat flux and particulate fallout near industrial blast furnaces.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 INDOMITIX INC. ALL RIGHTS RESERVED. // INQUIRIES: <a href="mailto:contact@indomitix.com">CONTACT@INDOMITIX.COM</a></p>
+    </footer>
+
+</body>
+</html>
