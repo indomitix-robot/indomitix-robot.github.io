@@ -48,26 +48,36 @@
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: -0.025em;
         }
 
-        .profile-select {
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             background: var(--card-bg);
-            color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
-            font-size: 0.9rem;
-            cursor: pointer;
+        }
+
+        .user-name-input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            width: 110px;
+            outline: none;
         }
 
         main {
             width: 100%;
             max-width: 1200px;
             display: grid;
-            grid-template-columns: 1fr 400px;
+            grid-template-columns: 1fr 440px;
             gap: 2rem;
         }
 
@@ -77,7 +87,7 @@
             }
         }
 
-        /* Left Column: Drill Arena */
+        /* Drill Arena */
         .drill-section {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -88,7 +98,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            min-height: 450px;
+            min-height: 480px;
         }
 
         .streak-badge {
@@ -115,10 +125,19 @@
             font-size: 5rem;
             font-weight: 800;
             letter-spacing: -0.05em;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 1rem;
+        }
+
+        .error-message {
+            color: var(--accent-red);
+            font-size: 1.1rem;
+            font-weight: 600;
+            min-height: 1.5rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
         }
 
         .answer-input-box {
@@ -133,6 +152,12 @@
             padding: 0.5rem;
             outline: none;
             margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .answer-input-box.error-state {
+            border-color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
         }
 
         .numpad {
@@ -159,48 +184,7 @@
             background: var(--accent-blue);
         }
 
-        .feedback-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.95);
-            border-radius: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            display: none;
-            z-index: 10;
-        }
-
-        .feedback-overlay.error {
-            border: 3px solid var(--accent-red);
-        }
-
-        .feedback-overlay h2 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .feedback-overlay p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .retry-input {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: var(--bg-color);
-            border: 2px solid var(--accent-red);
-            color: var(--text-main);
-            width: 180px;
-            text-align: center;
-            border-radius: 0.5rem;
-            padding: 0.25rem;
-            outline: none;
-        }
-
-        /* Right Column: Grid Dashboard */
+        /* Dashboard Section */
         .dashboard-section {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -233,7 +217,7 @@
 
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(11, 1fr);
+            grid-template-columns: 36px repeat(10, 1fr);
             gap: 4px;
             align-items: center;
             justify-items: center;
@@ -247,6 +231,26 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .row-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.1;
+        }
+
+        .row-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .row-speed-badge {
+            font-size: 0.62rem;
+            font-weight: 600;
+            color: var(--accent-blue);
         }
 
         .grid-cell {
@@ -284,7 +288,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.35rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .table-chip {
@@ -303,20 +307,24 @@
             border-color: var(--accent-blue);
         }
 
-        .speed-setting {
+        .speed-control {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
             font-size: 0.85rem;
             color: var(--text-muted);
         }
 
-        .speed-setting select {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.3rem;
+        .speed-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .speed-slider {
+            width: 100%;
+            accent-color: var(--accent-blue);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -324,11 +332,10 @@
 
     <header>
         <h1>⚡ Multiplication Flash Drill</h1>
-        <select class="profile-select" id="profileSelect" onchange="switchProfile()">
-            <option value="Child1">Child 1</option>
-            <option value="Child2">Child 2</option>
-            <option value="Child3">Child 3</option>
-        </select>
+        <div class="user-profile">
+            <span>👤</span>
+            <input type="text" id="userNameInput" class="user-name-input" value="Student" onchange="saveUserData()">
+        </div>
     </header>
 
     <main>
@@ -340,7 +347,9 @@
                 <span id="numA">7</span> × <span id="numB">8</span> =
             </div>
 
-            <input type="text" id="answerInput" class="answer-input-box" inputmode="none" autocomplete="off" autofocus>
+            <div class="error-message" id="errorMessage"></div>
+
+            <input type="text" id="answerInput" class="answer-input-box" inputmode="none" autocomplete="off" autofocus readonly>
 
             <div class="numpad">
                 <button class="num-btn" onclick="pressKey('1')">1</button>
@@ -355,13 +364,6 @@
                 <button class="num-btn" onclick="pressKey('C')">C</button>
                 <button class="num-btn" onclick="pressKey('0')">0</button>
                 <button class="num-btn" onclick="pressKey('OK')">↵</button>
-            </div>
-
-            <!-- Error Feedback Overlay -->
-            <div class="feedback-overlay" id="feedbackOverlay">
-                <h2 id="errorCorrectionPrompt">Not quite!</h2>
-                <p>Type the correct answer to continue:</p>
-                <input type="text" id="retryInput" class="retry-input" inputmode="none" autocomplete="off">
             </div>
         </section>
 
@@ -381,26 +383,21 @@
                 <div class="table-toggles" id="tableToggles">
                     <!-- Table Chips 1-10 -->
                 </div>
-                <div class="speed-setting">
-                    <span>Mastery Speed Target:</span>
-                    <select id="speedTargetSelect" onchange="updateSpeedTarget()">
-                        <option value="1.5">Fast (&lt; 1.5s)</option>
-                        <option value="2.0" selected>Normal (&lt; 2.0s)</option>
-                        <option value="3.0">Relaxed (&lt; 3.0s)</option>
-                    </select>
+                <div class="speed-control">
+                    <div class="speed-label-row">
+                        <span>Speed Target:</span>
+                        <strong id="speedValueDisplay" style="color: var(--text-main);">2.0s</strong>
+                    </div>
+                    <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="4.0" step="0.1" value="2.0" oninput="updateSpeedTarget(this.value)">
                 </div>
             </div>
         </section>
     </main>
 
     <script>
-        // State Management & Storage
-        let currentProfile = 'Child1';
-        let maxTable = 10;
+        let userName = 'Student';
         let speedThreshold = 2.0; // seconds
         let activeTables = Array.from({length: 10}, (_, i) => i + 1);
-        
-        // Data structure: stats['7_8'] = { attempts: [{correct: true, speed: 1.2}, ...] (max 5) }
         let stats = {};
         
         let currentPair = { a: 2, b: 3 };
@@ -411,21 +408,20 @@
         let expectedAnswer = 0;
 
         function initApp() {
-            loadProfileData();
+            loadUserData();
             buildTableToggles();
             renderGrid();
             nextQuestion();
         }
 
-        function loadProfileData() {
-            currentProfile = document.getElementById('profileSelect').value;
-            const saved = localStorage.getItem('mult_app_' + currentProfile);
+        function loadUserData() {
+            const saved = localStorage.getItem('mult_app_user_data');
             if (saved) {
                 const data = JSON.parse(saved);
+                userName = data.userName || 'Student';
                 stats = data.stats || {};
                 activeTables = data.activeTables || Array.from({length: 10}, (_, i) => i + 1);
                 speedThreshold = data.speedThreshold || 2.0;
-                document.getElementById('speedTargetSelect').value = speedThreshold;
             } else {
                 stats = {};
                 activeTables = Array.from({length: 10}, (_, i) => i + 1);
@@ -434,19 +430,17 @@
                         stats[`${i}_${j}`] = { attempts: [] };
                     }
                 }
-                saveProfileData();
+                saveUserData();
             }
+            document.getElementById('userNameInput').value = userName;
+            document.getElementById('speedSlider').value = speedThreshold;
+            document.getElementById('speedValueDisplay').innerText = speedThreshold.toFixed(1) + 's';
         }
 
-        function saveProfileData() {
-            const data = { stats, activeTables, speedThreshold };
-            localStorage.setItem('mult_app_' + currentProfile, JSON.stringify(data));
-        }
-
-        function switchProfile() {
-            loadProfileData();
-            renderGrid();
-            nextQuestion();
+        function saveUserData() {
+            userName = document.getElementById('userNameInput').value || 'Student';
+            const data = { userName, stats, activeTables, speedThreshold };
+            localStorage.setItem('mult_app_user_data', JSON.stringify(data));
         }
 
         function toggleSettings() {
@@ -468,21 +462,42 @@
 
         function toggleTableActive(num) {
             if (activeTables.includes(num)) {
-                if (activeTables.length === 1) return; // Keep at least one
+                if (activeTables.length === 1) return;
                 activeTables = activeTables.filter(t => t !== num);
             } else {
                 activeTables.push(num);
                 activeTables.sort((a,b) => a - b);
             }
-            saveProfileData();
+            saveUserData();
             buildTableToggles();
             renderGrid();
             nextQuestion();
         }
 
-        function updateSpeedTarget() {
-            speedThreshold = parseFloat(document.getElementById('speedTargetSelect').value);
-            saveProfileData();
+        function updateSpeedTarget(val) {
+            speedThreshold = parseFloat(val);
+            document.getElementById('speedValueDisplay').innerText = speedThreshold.toFixed(1) + 's';
+            saveUserData();
+        }
+
+        // Calculate Row Average Speed for Correct Answers
+        function getRowAverageSpeed(rowNum) {
+            let totalSpeed = 0;
+            let count = 0;
+
+            for (let c = 1; c <= 10; c++) {
+                const key = `${rowNum}_${c}`;
+                if (stats[key] && stats[key].attempts) {
+                    stats[key].attempts.forEach(att => {
+                        if (att.correct) {
+                            totalSpeed += att.speed;
+                            count++;
+                        }
+                    });
+                }
+            }
+
+            return count > 0 ? (totalSpeed / count).toFixed(1) + 's' : '--';
         }
 
         // Render 10x10 Grid with 5-Sector Pie Chart SVGs
@@ -490,7 +505,6 @@
             const container = document.getElementById('gridContainer');
             container.innerHTML = '';
 
-            // Top-left blank corner label
             const corner = document.createElement('div');
             corner.className = 'grid-label';
             container.appendChild(corner);
@@ -505,25 +519,29 @@
 
             // Rows
             for (let r = 1; r <= 10; r++) {
-                // Row label
                 const rowLbl = document.createElement('div');
-                rowLbl.className = 'grid-label';
-                rowLbl.innerText = r;
+                rowLbl.className = 'grid-label row-header';
+                
+                const avgSpeed = getRowAverageSpeed(r);
+                rowLbl.innerHTML = `
+                    <span class="row-title">${r}</span>
+                    <span class="row-speed-badge">${avgSpeed}</span>
+                `;
                 container.appendChild(rowLbl);
 
                 for (let c = 1; c <= 10; c++) {
                     const cell = document.createElement('div');
                     const key = `${r}_${c}`;
-                    const isDisabled = !activeTables.includes(r) || !activeTables.includes(c);
                     
-                    cell.className = `grid-cell ${isDisabled ? 'disabled' : ''}`;
+                    const isActive = activeTables.includes(r);
+                    
+                    cell.className = `grid-cell ${!isActive ? 'disabled' : ''}`;
                     cell.innerHTML = createPieSvg(stats[key] ? stats[key].attempts : []);
                     container.appendChild(cell);
                 }
             }
         }
 
-        // Generate 5-slice SVG pie chart
         function createPieSvg(attempts) {
             let svg = `<svg viewBox="0 0 32 32" width="100%" height="100%">`;
             svg += `<circle cx="16" cy="16" r="15" fill="none" stroke="#334155" stroke-width="2"/>`;
@@ -532,7 +550,7 @@
             for (let i = 0; i < totalSectors; i++) {
                 const attempt = attempts[i];
                 let color = 'none';
-                let strokeColor = '#ffffff'; // white/silver outline for empty slots
+                let strokeColor = '#ffffff';
 
                 if (attempt) {
                     strokeColor = 'transparent';
@@ -545,7 +563,6 @@
                     }
                 }
 
-                // Draw sector arc if present, or hollow ring slot
                 if (color !== 'none') {
                     svg += getPieSlicePath(i, totalSectors, color);
                 } else {
@@ -586,16 +603,17 @@
             return `<path d="${pathData}" fill="rgba(255,255,255,0.05)" stroke="${strokeColor}" stroke-width="1"/>`;
         }
 
-        // Adaptive Engine: Pick next question with 80/20 split & anti-spam cooldown
+        // Adaptive Engine: Pick pairs where row 'r' is in activeTables
         function nextQuestion() {
             let pool = [];
-            for (let r of activeTables) {
-                for (let c of activeTables) {
-                    pool.push({a: r, b: c});
+            for (let r = 1; r <= 10; r++) {
+                if (activeTables.includes(r)) {
+                    for (let c = 1; c <= 10; c++) {
+                        pool.push({a: r, b: c});
+                    }
                 }
             }
 
-            // Categorize unmastered vs mastered
             let unmastered = [];
             let mastered = [];
 
@@ -603,7 +621,6 @@
                 const key = `${pair.a}_${pair.b}`;
                 const attempts = stats[key] ? stats[key].attempts : [];
                 
-                // Mastered definition: Last 5 attempts all correct and fast
                 const isMastered = attempts.length === 5 && attempts.every(att => att.correct && att.speed <= speedThreshold);
                 
                 if (isMastered) {
@@ -613,14 +630,12 @@
                 }
             });
 
-            // 80/20 selection with anti-spam cooldown
             let selected;
             const useMasteredReview = mastered.length > 0 && (unmastered.length === 0 || Math.random() < 0.2);
 
             let candidatePool = useMasteredReview ? mastered : unmastered;
             if (candidatePool.length === 0) candidatePool = pool;
 
-            // Filter out immediate last asked pair (anti-spam cooldown)
             let filteredPool = candidatePool.filter(p => !(lastAskedPair && p.a === lastAskedPair.a && p.b === lastAskedPair.b));
             if (filteredPool.length === 0) filteredPool = candidatePool;
 
@@ -632,68 +647,66 @@
 
             document.getElementById('numA').innerText = currentPair.a;
             document.getElementById('numB').innerText = currentPair.b;
-            document.getElementById('answerInput').value = '';
+            
+            awaitingCorrection = false;
+            document.getElementById('errorMessage').innerText = '';
+            const input = document.getElementById('answerInput');
+            input.value = '';
+            input.classList.remove('error-state');
+            
             startTime = Date.now();
         }
 
-        // Input & Evaluation Handling
         const answerInput = document.getElementById('answerInput');
-        const retryInput = document.getElementById('retryInput');
 
         function pressKey(val) {
-            if (awaitingCorrection) {
-                handleCorrectionInput(val);
-                return;
-            }
-
             if (val === 'C') {
                 answerInput.value = '';
             } else if (val === 'OK') {
                 checkAnswer(answerInput.value);
             } else {
                 answerInput.value += val;
-                // Auto-submit when length matches expected answer length
                 if (answerInput.value.length >= String(expectedAnswer).length) {
                     checkAnswer(answerInput.value);
                 }
             }
         }
 
-        // Physical Keyboard Support
         window.addEventListener('keydown', (e) => {
             if (e.key >= '0' && e.key <= '9') {
                 pressKey(e.key);
             } else if (e.key === 'Backspace') {
-                if (awaitingCorrection) {
-                    retryInput.value = retryInput.value.slice(0, -1);
-                } else {
-                    answerInput.value = answerInput.value.slice(0, -1);
-                }
+                answerInput.value = answerInput.value.slice(0, -1);
             } else if (e.key === 'Enter') {
-                if (awaitingCorrection) {
-                    handleCorrectionInput('OK');
-                } else {
-                    checkAnswer(answerInput.value);
-                }
+                checkAnswer(answerInput.value);
             }
         });
 
         function checkAnswer(valStr) {
             if (!valStr) return;
             const userAns = parseInt(valStr, 10);
+            
+            if (awaitingCorrection) {
+                if (userAns === expectedAnswer) {
+                    nextQuestion();
+                } else {
+                    answerInput.value = '';
+                }
+                return;
+            }
+
             const elapsed = (Date.now() - startTime) / 1000;
             const isCorrect = (userAns === expectedAnswer);
 
             const key = `${currentPair.a}_${currentPair.b}`;
             if (!stats[key]) stats[key] = { attempts: [] };
             
-            // Sliding window: keep max 5
             stats[key].attempts.push({ correct: isCorrect, speed: elapsed });
             if (stats[key].attempts.length > 5) {
                 stats[key].attempts.shift();
             }
 
-            saveProfileData();
+            saveUserData();
             renderGrid();
 
             if (isCorrect) {
@@ -720,33 +733,11 @@
 
         function triggerErrorFlow() {
             awaitingCorrection = true;
-            retryInput.value = '';
-            document.getElementById('errorCorrectionPrompt').innerText = `Incorrect! ${currentPair.a} × ${currentPair.b} = ${expectedAnswer}`;
-            document.getElementById('feedbackOverlay').style.display = 'flex';
-            retryInput.focus();
+            answerInput.value = '';
+            answerInput.classList.add('error-state');
+            document.getElementById('errorMessage').innerText = `Incorrect! Type ${expectedAnswer} to continue`;
         }
 
-        function handleCorrectionInput(val) {
-            if (val === 'C') {
-                retryInput.value = '';
-            } else if (val === 'OK' || retryInput.value.length >= String(expectedAnswer).length) {
-                if (parseInt(retryInput.value, 10) === expectedAnswer) {
-                    document.getElementById('feedbackOverlay').style.display = 'none';
-                    awaitingCorrection = false;
-                    answerInput.focus();
-                    nextQuestion();
-                } else {
-                    retryInput.value = '';
-                }
-            } else if (val >= '0' && val <= '9') {
-                retryInput.value += val;
-                if (retryInput.value.length >= String(expectedAnswer).length) {
-                    handleCorrectionInput('OK');
-                }
-            }
-        }
-
-        // Initialize on load
         window.onload = initApp;
     </script>
 </body>
